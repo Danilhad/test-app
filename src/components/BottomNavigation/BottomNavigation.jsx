@@ -1,11 +1,19 @@
 // src/components/BottomNavigation/BottomNavigation.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShopContext } from '../../context/ShopContext.jsx';
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
   const { cart } = useShopContext();
+
+  // Обработчик события скрытия клавиатуры  
+  useEffect(() => {
+    if (document.body.classList.contains('keyboard-open')) {
+      document.querySelector('.bottom-nav').classList.add('keyboard-open');
+    }
+  }, []);
+  
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">

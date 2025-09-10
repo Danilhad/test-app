@@ -49,7 +49,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       </div>
       
       {/* Содержимое карточки */}
-      <div className="p-4 sm:p-5 flex flex-col justify-between">
+      <div className="p-4 sm:p-5 flex flex-col justify-between min-h-[100px]">
         {/* Название товара */}
         <h3 className="font-medium text-gray-800 line-clamp-2 mb-3 text-sm sm:text-base leading-tight group-hover:text-primary-700 transition-colors">
           {product.title}

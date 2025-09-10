@@ -15,3 +15,11 @@
   box-shadow: none !important;
   transform: none !important;
 }
+/* src/index.css */
+body.keyboard-open {
+  padding-bottom: 0 !important;
+}
+
+.bottom-nav.keyboard-open {
+  display: none;
+}

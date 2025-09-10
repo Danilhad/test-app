@@ -38,24 +38,27 @@ const ProductDetail = ({ products }) => {
           <p className="text-gray-600 mb-4">{product.description}</p>
           
           {/* Размеры */}
-          <div className="mb-6">
-            <h3 className="font-medium text-gray-700 mb-2">Доступные размеры:</h3>
-            <div className="flex flex-wrap gap-2">
-              {product.sizes.map(size => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 border rounded-lg transition-colors ${
-                    selectedSize === size 
-                      ? 'bg-gradient-to-r from-yellow-100 to-yellow-200 text-black border-black' 
-                      : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
+<div className="mb-6">
+  <h3 className="font-medium text-gray-700 mb-2">Доступные размеры:</h3>
+  <div className="flex flex-wrap gap-2">
+    {product.sizes.map(size => (
+      <button
+        key={size}
+        onClick={() => setSelectedSize(size)}
+        className={`
+          px-4 py-2 rounded-lg font-medium transition-all duration-300 
+          ${selectedSize === size 
+            ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white shadow-md' 
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} 
+          border border-gray-200 hover:border-gray-300
+          transform hover:scale-105
+        `}
+      >
+        {size}
+      </button>
+    ))}
+  </div>
+</div>
 
           {/* Цена и кнопка */}
           <div className="flex items-center justify-between">
