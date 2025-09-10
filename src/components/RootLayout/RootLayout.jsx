@@ -3,13 +3,19 @@ import React, { useEffect, useState } from 'react';
 import Header from '../Header/Header';
 import CategoryFilter from '../CategoryFilter/CategoryFilter';
 import BottomNavigation from '../BottomNavigation/BottomNavigation';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useShopContext } from '../../context/ShopContext.jsx';
 import OrderView from '../OrderView/OrderView';
+
+
 
 const RootLayout = () => {
   const { showOrderView } = useShopContext(); // ← Получаем состояние из контекста
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const location = useLocation();
+
+  // Скрываем CategoryFilter на страницах /cart и /order
+  const isCartOrOrderPage = location.pathname === '/cart' || location.pathname === '/order';
 
 // ↑ Используем useState для хранения состояния открыта ли клавиатура 
   useEffect(() => {
@@ -29,7 +35,7 @@ const RootLayout = () => {
   return (
       <div className="min-h-screen flex flex-col">
       <Header />
-      <CategoryFilter />
+      {!isCartOrOrderPage && <CategoryFilter />}
       
       <main className="flex-grow container mx-auto px-4 py-6">
         <Outlet />

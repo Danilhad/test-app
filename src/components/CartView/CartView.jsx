@@ -9,7 +9,9 @@ const CartView = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="text-center py-10">
+      <div className="flex flex-col items-center justify-center text-center py-10">
+        {/* Эмодзи корзины */}
+        <span className="text-8xl text-primary-500 mb-6">🛒</span>
         <p className="text-gray-500 text-lg">Корзина пуста</p>
       </div>
     );
@@ -42,7 +44,7 @@ const CartView = () => {
               onClick={() => removeFromCart(item.id, item.size)}
               className="text-red-500 hover:text-red-700"
             >
-              Удалить
+              ❌
             </button>
           </li>
         ))}
