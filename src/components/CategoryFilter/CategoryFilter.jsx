@@ -8,8 +8,9 @@ const CategoryFilter = () => {
   const categories = [
     { id: 'all', name: 'Все', icon: '🛍️' },
     { id: 'hat', name: 'Головные уборы', icon: '🧢' },
-    { id: 'bottom', name: 'Низ', icon: '👖' },
-    { id: 'top', name: 'Верх', icon: '👕' }
+   // { id: 'bottom', name: 'Низ', icon: '👖' },
+    { id: 'top', name: 'Верх', icon: '👕' },
+    { id: 'accessories', name: 'Аксессуары', icon: '🎒' },
   ];
 
   return (

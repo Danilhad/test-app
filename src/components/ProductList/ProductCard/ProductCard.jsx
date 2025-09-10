@@ -53,7 +53,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </h3>
         
         {/* Цена */}
-        <div className="flex items-center justify-center mb-3 sm:mb-4">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
           <span className="text-lg sm:text-xl font-bold text-primary-600">
             {product.price.toLocaleString()} ₽
           </span>

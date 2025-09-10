@@ -1,10 +1,9 @@
 export const products = [
-  { id: 1, title: 'Красная бейсболка', price: 990, category: 'hat', image: 'https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 2, title: 'Черные джинсы', price: 2490, category: 'bottom', image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 3, title: 'Синяя футболка', price: 1290, category: 'top', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 4, title: 'Кепка летняя', price: 790, category: 'hat', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 5, title: 'Шорты спортивные', price: 1790, category: 'bottom', image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 6, title: 'Толстовка с капюшоном', price: 3490, category: 'top', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 7, title: 'Зимняя шапка', price: 1290, category: 'hat', image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 8, title: 'Брюки классические', price: 2990, category: 'bottom', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
+  { id: 1, title: 'Боди', price: 1000, category: 'top', image: 'https://i.postimg.cc/v8PDCrL6/body.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['59', '66', '73', '80'] },
+  { id: 2, title: 'Шапка', price: 400, category: 'hat', image: 'https://i.postimg.cc/htmjJHF9/hat.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['Единый'] },
+  { id: 3, title: 'Жилет', price: 1500, category: 'top', image: 'https://i.postimg.cc/J4Gt8sPY/jilet.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['90', '100', '110', '120', '130', '140'] },
+  { id: 4, title: 'Маникюрный набор', price: 300, category: 'accessories', image: 'https://i.postimg.cc/pX4rLPSW/manicurset.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['Единый'] },
+  { id: 5, title: 'Поло', price: 900, category: 'top', image: 'https://i.postimg.cc/VNBkgnkv/polo.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['90', '100', '110', '120', '130', '140'] },
+  { id: 6, title: 'Комбинезон', price: 1400, category: 'top', image: 'https://i.postimg.cc/hjDP5vXr/suit.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['66', '73', '80', '90'] },
+  { id: 7, title: 'Держатель для соски', price: 450, category: 'accessories', image: 'https://i.postimg.cc/wBdBD0Hn/photo-2025-08-29-19-07-01.jpg', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['Единый'] },
 ];
