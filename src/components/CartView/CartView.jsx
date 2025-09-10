@@ -59,13 +59,13 @@ const CartView = () => {
         <div className="mt-4 flex space-x-3">
           <button 
             onClick={clearCart}
-            className="w-full py-2 px-4 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors"
+            className="w-full py-2 px-4 bg-gray-200 shadow-sm rounded-lg text-gray-700 hover:bg-gray-300 transition-colors"
           >
             Очистить
           </button>
           <button 
             onClick={() => navigate('/order')}
-            className="w-full py-2 px-4 bg-primary-600 text-black rounded-lg hover:bg-primary-700 transition-colors"
+            className="w-full py-2 px-4 bg-white shadow-sm border-gray-800 text-black rounded-lg hover:bg-primary-700 transition-colors"
           >
             Оформить заказ
           </button>

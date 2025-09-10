@@ -13,7 +13,7 @@ const CategoryFilter = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-15 z-55 ${classname}">
+    <nav className="bg-white shadow-sm border-b border-gray-100 sticky ">
       <div className="container mx-auto px-4 py-2">
         <div 
           className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide sm:scrollbar-default" 

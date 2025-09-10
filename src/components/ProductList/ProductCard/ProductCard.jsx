@@ -46,14 +46,14 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
       
       {/* Содержимое карточки */}
-      <div className="p-4 sm:p-5 flex flex-col justify-between min-h-[100px]">
+      <div className="p-4 sm:p-5 flex flex-col justify-center min-h-[100px]">
         {/* Название товара */}
-        <h3 className="font-medium text-gray-800 line-clamp-2 mb-3 text-sm sm:text-base leading-tight group-hover:text-primary-700 transition-colors">
+        <h3 className="font-medium text-gray-800 line-clamp-2 mb-2 text-sm sm:text-base leading-tight group-hover:text-primary-700 transition-colors">
           {product.title}
         </h3>
         
         {/* Цена */}
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <div className="flex items-center justify-center mb-3 sm:mb-4">
           <span className="text-lg sm:text-xl font-bold text-primary-600">
             {product.price.toLocaleString()} ₽
           </span>

@@ -25,7 +25,7 @@ const OrderView = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-sm">
+    <div className="max-w-md mx-auto p-6 bg-[#f6f8f9] rounded-xl shadow-sm">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Оформление заказа</h2>
       
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -96,7 +96,7 @@ const OrderView = () => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-primary-600 text-black rounded-lg hover:bg-primary-700 transition-colors"
+            className="px-4 py-2 bg-white shadow-sm border-gray-800 text-black rounded-lg hover:bg-primary-700 transition-colors"
           >
             Оформить
           </button>

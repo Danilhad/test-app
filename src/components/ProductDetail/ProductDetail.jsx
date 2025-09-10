@@ -48,7 +48,7 @@ const ProductDetail = ({ products }) => {
         className={`
           px-4 py-2 rounded-lg font-medium transition-all duration-300 
           ${selectedSize === size 
-            ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white shadow-md' 
+            ? 'bg-gradient-to-r bg-white text-black shadow-md' 
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} 
           border border-gray-200 hover:border-gray-300
           transform hover:scale-105
