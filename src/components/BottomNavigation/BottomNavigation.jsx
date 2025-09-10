@@ -12,11 +12,9 @@ const BottomNavigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-around py-3">
           <button
-            onClick={() => navigate('/')} // ← Навигация к главной странице
+            onClick={() => navigate('/')}
             className={`flex flex-col items-center px-6 py-2 rounded-xl transition-all duration-200 ${
-              window.location.pathname === '/'
-                ? 'text-primary-600 bg-primary-50'
-                : 'text-gray-500 hover:text-gray-700'
+              window.location.pathname === '/' ? 'text-primary-600 bg-primary-50' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             <span className="text-2xl">🏠</span>
@@ -24,11 +22,9 @@ const BottomNavigation = () => {
           </button>
           
           <button
-            onClick={() => navigate('/cart')} // ← Навигация к корзине
+            onClick={() => navigate('/cart')}
             className={`flex flex-col items-center px-6 py-2 rounded-xl transition-all duration-200 relative ${
-              window.location.pathname === '/cart'
-                ? 'text-primary-600 bg-primary-50'
-                : 'text-gray-500 hover:text-gray-700'
+              window.location.pathname === '/cart' ? 'text-primary-600 bg-primary-50' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             {cart.length > 0 && (

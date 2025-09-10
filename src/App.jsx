@@ -1,37 +1,27 @@
 // src/App.jsx
 import React from 'react';
-import Header from './components/Header/Header';
-import CategoryFilter from './components/CategoryFilter/CategoryFilter';
-import BottomNavigation from './components/BottomNavigation/BottomNavigation';
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
-import { ShopProvider, useShopContext } from './context/ShopContext';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import RootLayout from './components/RootLayout/RootLayout.jsx'; // ← Используйте импортированный
 import ProductList from './components/ProductList/ProductList';
 import CartView from './components/CartView/CartView';
 import OrderView from './components/OrderView/OrderView';
 import ProductDetail from './components/ProductDetail/ProductDetail.jsx';
-import RootLayout from './components/RootLayout/RootLayout.jsx';
-
-// Определяем товары в верхней части файла
-const products = [
-  { id: 1, title: 'Красная бейсболка', price: 990, category: 'hat', image: 'https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 2, title: 'Черные джинсы', price: 2490, category: 'bottom', image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 3, title: 'Синяя футболка', price: 1290, category: 'top', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 4, title: 'Кепка летняя', price: 790, category: 'hat', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 5, title: 'Шорты спортивные', price: 1790, category: 'bottom', image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 6, title: 'Толстовка с капюшоном', price: 3490, category: 'top', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 7, title: 'Зимняя шапка', price: 1290, category: 'hat', image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-  { id: 8, title: 'Брюки классические', price: 2990, category: 'bottom', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=300&h=300&fit=crop', description: 'Стильная бейсболка из высококачественной ткани.', sizes: ['S', 'M', 'L'] },
-];
+import { products } from './products';
+import { ShopProvider } from './context/ShopContext.jsx';
 
 // Создаем роутер
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout />,
+    element: (
+      <ShopProvider> {/* ← Обёртка */}
+        <RootLayout />
+      </ShopProvider>
+    ),
     children: [
       {
         index: true,
-        element: <ProductList products={products} />,
+        element: <ProductList products={products} />, // ← Передача товаров
       },
       {
         path: 'product/:id',
@@ -53,7 +43,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-// Главный компонент приложения
 export default function AppWrapper() {
   return <RouterProvider router={router} />;
 }

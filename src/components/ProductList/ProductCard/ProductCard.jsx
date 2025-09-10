@@ -45,19 +45,21 @@ const ProductCard = ({ product, onAddToCart }) => {
         
         {/* Кнопка добавления в корзину */}
         <button
-          onClick={(e) => {
-            e.stopPropagation(); // ❄️ Останавливаем переход при клике на кнопку
-            handleAddToCart();
-          }}
-          disabled={isAdded}
-          className={`w-full py-2 sm:py-3 px-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap ` +
-             (isAdded
-               ? 'bg-yellow-200 text-black'
-               : 'bg-gradient-to-r from-primary-500 to-primary-600 text-black hover:from-primary-600 hover:to-primary-700') +
-             ` ${isAdded ? 'animate-pulse' : 'hover:shadow-lg'} mt-auto`}
-        >
-          {isAdded ? '👍 Добавлено' : '🛒 В корзину'}
-        </button>
+        onClick={(e) => {
+          e.stopPropagation();
+          handleAddToCart();
+        }}
+        disabled={isAdded}
+        className={`w-full py-2 sm:py-3 px-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap
+          ${
+            isAdded
+              ? 'bg-yellow-200 text-black border-2 border-yellow-400'
+              : 'bg-gradient-to-r from-primary-500 to-primary-600 text-black border-2 border-primary-500 hover:border-primary-600'
+          }
+          ${isAdded ? 'animate-pulse' : 'hover:shadow-lg'} mt-auto`}
+      >
+        {isAdded ? '👍 Добавлено' : '🛒 В корзину'}
+      </button>
       </div>
     </div>
   );

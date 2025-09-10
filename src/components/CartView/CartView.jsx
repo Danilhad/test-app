@@ -1,9 +1,11 @@
 // src/components/CartView/CartView.jsx
 import React, { useContext } from 'react';
 import { useShopContext } from '../../context/ShopContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const CartView = () => {
   const { cart, removeFromCart, clearCart, setShowOrderView } = useShopContext();
+   const navigate = useNavigate();
 
   if (cart.length === 0) {
     return (
@@ -16,7 +18,7 @@ const CartView = () => {
   const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div>
+    <div className="max-h-[calc(100vh-120px)] overflow-y-auto pb-20 scrollbar-hide sm:scrollbar-default">
       <h2 className="text-2xl font-bold mb-4">Корзина</h2>
       <ul className="space-y-4">
         {cart.map(item => (
@@ -52,8 +54,8 @@ const CartView = () => {
             Очистить
           </button>
           <button 
-            onClick={() => setShowOrderView(true)}
-            className="w-full py-2 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            onClick={() => navigate('/order')}
+            className="w-full py-2 px-4 bg-primary-600 text-black rounded-lg hover:bg-primary-700 transition-colors"
           >
             Оформить заказ
           </button>
