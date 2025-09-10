@@ -33,11 +33,11 @@ const RootLayout = () => {
   }, []);
   
   return (
-      <div className="min-h-screen flex flex-col">
+      <div className="bg-[#f6f8f9] min-h-screen flex flex-col">
       <Header />
-      {!isCartOrOrderPage && <CategoryFilter />}
+      {!isCartOrOrderPage && <CategoryFilter classname="z-30" />}
       
-      <main className="flex-grow container mx-auto px-4 py-6">
+      <main className="flex-grow container mx-auto px-4 py-6 pb-20">
         <Outlet />
         {showOrderView && <OrderView />}
       </main>
