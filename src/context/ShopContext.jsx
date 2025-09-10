@@ -12,18 +12,29 @@ export const ShopProvider = ({ children }) => {
   const [activeView, setActiveView] = useState('home'); // добавляем состояние для активной страницы
 
 
-   // Функция для добавления товара с уникальным ID
-  const addToCart = (product) => {
-    const uniqueId = `${product.id}-${Date.now()}`;
-    setCart(prevCart => [...prevCart, { ...product, id: uniqueId }]);
-  };
-  
-   // Функция для удаления товара по ID
-  const removeFromCart = (id) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== id));
+   // Добавление товара с размером
+  const addToCart = (item) => {
+    setCart(prevCart => {
+      const existingItem = prevCart.find(
+        i => i.id === item.id && i.size === item.size
+      );
+      
+      if (existingItem) {
+        return prevCart.map(i =>
+          i.id === item.id && i.size === item.size
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
+      }
+      
+      return [...prevCart, { ...item, quantity: 1 }];
+    });
   };
 
-  // Функция для очистки корзины
+  const removeFromCart = (id, size) => {
+    setCart(prevCart => prevCart.filter(item => !(item.id === id && item.size === size)));
+  };
+
   const clearCart = () => {
     setCart([]);
   };

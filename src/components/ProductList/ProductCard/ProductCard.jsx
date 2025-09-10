@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SizeSelectorModal from '../../Modals/SizeSelectorModal';
+import { useShopContext } from '../../../context/ShopContext';
+import { useRef, useEffect } from 'react';
 
 const ProductCard = ({ product, onAddToCart }) => {
   const [isAdded, setIsAdded] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false);
   const navigate = useNavigate();
+  const { addToCart } = useShopContext();
+  const cardRef = useRef(null); // ← Создаем ref для карточки
 
   const handleAddToCart = () => {
     onAddToCart(product);
@@ -14,7 +20,20 @@ const ProductCard = ({ product, onAddToCart }) => {
     }, 1000);
   };
 
+   // Очищаем состояние hover при открытии модалки
+  useEffect(() => {
+    if (showSizeModal && cardRef.current) {
+      const event = new MouseEvent('mouseleave', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      cardRef.current.dispatchEvent(event); // ← Имитируем уход мыши
+    }
+  }, [showSizeModal]);
+
   return (
+    <>
     <div 
       className="card group relative overflow-hidden bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-50 h-72 sm:h-80 cursor-pointer"
       onClick={() => navigate(`/product/${product.id}`)} // ✅ Переход при клике
@@ -45,23 +64,29 @@ const ProductCard = ({ product, onAddToCart }) => {
         
         {/* Кнопка добавления в корзину */}
         <button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleAddToCart();
-        }}
-        disabled={isAdded}
-        className={`w-full py-2 sm:py-3 px-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap
-          ${
-            isAdded
-              ? 'bg-yellow-200 text-black border-2 border-yellow-400'
-              : 'bg-gradient-to-r from-primary-500 to-primary-600 text-black border-2 border-primary-500 hover:border-primary-600'
-          }
-          ${isAdded ? 'animate-pulse' : 'hover:shadow-lg'} mt-auto`}
-      >
-        {isAdded ? '👍 Добавлено' : '🛒 В корзину'}
-      </button>
+          onClick={(e) => {
+            {showSizeModal && (
+        <SizeSelectorModal
+          product={product}
+          onClose={() => setShowSizeModal(false)}
+         // ← Сбрасываем состояние после добавленbzia в корзину
+        />
+    )}
+          }}
+          disabled={isAdded}
+          className={`w-full py-2 sm:py-3 px-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap
+            ${
+              isAdded
+                ? 'bg-yellow-200 text-black border-2 border-yellow-400'
+                : 'bg-gradient-to-r from-primary-500 to-primary-600 text-black border-2 border-primary-500 hover:border-primary-600'
+            }
+            ${isAdded ? 'animate-pulse' : 'hover:shadow-lg'} mt-auto`}
+        >
+          {isAdded ? '👍 Добавлено' : '🛒 В корзину'}
+        </button>
       </div>
     </div>
+    </>
   );
 };
 

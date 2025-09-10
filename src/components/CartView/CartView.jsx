@@ -15,23 +15,31 @@ const CartView = () => {
     );
   }
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="max-h-[calc(100vh-120px)] overflow-y-auto pb-20 scrollbar-hide sm:scrollbar-default">
+    <div>
       <h2 className="text-2xl font-bold mb-4">Корзина</h2>
       <ul className="space-y-4">
         {cart.map(item => (
-          <li key={item.id} className="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm">
+          <li 
+            key={`${item.id}-${item.size}`} 
+            className="flex justify-between items-center p-3 bg-gray-50 rounded-lg shadow-sm"
+          >
             <div className="flex items-center">
               <img src={item.image} alt={item.title} className="w-12 h-12 object-cover rounded mr-3" />
               <div>
                 <h3 className="font-medium">{item.title}</h3>
-                <p className="text-sm text-gray-500">{item.price} ₽</p>
+                <div className="flex items-center mt-1">
+                  <span className="text-sm text-gray-500 mr-2">{item.price} ₽ × {item.quantity}</span>
+                  <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-black text-white">
+                    {item.size}
+                  </span>
+                </div>
               </div>
             </div>
             <button 
-              onClick={() => removeFromCart(item.id)}
+              onClick={() => removeFromCart(item.id, item.size)}
               className="text-red-500 hover:text-red-700"
             >
               Удалить

@@ -10,3 +10,8 @@
   -ms-overflow-style: none;  /* IE и Edge */
   scrollbar-width: none;     /* Firefox */
 }
+/* src/index.css или глобальный CSS */
+.card.modal-open & {
+  box-shadow: none !important;
+  transform: none !important;
+}

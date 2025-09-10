@@ -1,12 +1,16 @@
 // src/components/ProductDetail/ProductDetail.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
+import { useShopContext } from '../../context/ShopContext';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetail = ({ products }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const {addToCart} = useShopContext(); // ← Получаем функцию из контекста
   const [selectedSize, setSelectedSize] = useState('');
-
+  
   useEffect(() => {
     const foundProduct = products.find(p => p.id === parseInt(id));
     if (foundProduct) setProduct(foundProduct);
@@ -15,6 +19,7 @@ const ProductDetail = ({ products }) => {
   if (!product) return <div>Товар не найден</div>;
 
   return (
+    <div className="max-h-[calc(100vh-120px)] overflow-y-auto pb-20 scrollbar-hide sm:scrollbar-default"> {/* ← Добавляем стили для скролла в мобильных устройствах */}
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-sm">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">{product.title}</h2>
       
@@ -58,10 +63,16 @@ const ProductDetail = ({ products }) => {
               {product.price.toLocaleString()} ₽
             </span>
             <button 
-              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+              className=' py-2 sm:py-3 px-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap bg-gradient-to-r from-primary-500 to-primary-600 text-black border-2 border-primary-500 hover:border-primary-600'
               onClick={() => {
                 // Добавьте логику добавления в корзину
-                alert(`Добавлен ${product.title}, размер: ${selectedSize}`);
+                // Внутри функции handleAdd в SizeSelectorModal.jsx
+if (selectedSize) {
+  const itemWithSize = { ...product, size: selectedSize };
+  addToCart(itemWithSize); // Добавляем товар с размером в корзину
+  navigate('/')
+}
+
               }}
             >
               В корзину
@@ -69,6 +80,7 @@ const ProductDetail = ({ products }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
