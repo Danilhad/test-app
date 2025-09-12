@@ -8,6 +8,9 @@ import OrderView from './components/OrderView/OrderView';
 import ProductDetail from './components/ProductDetail/ProductDetail.jsx';
 import { products } from './products';
 import { ShopProvider } from './context/ShopContext.jsx';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import './styles/slick.css'; // ← Ваши кастомные стили
 
 // Создаем роутер
 const router = createBrowserRouter([

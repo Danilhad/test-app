@@ -1,0 +1,14 @@
+/* src/styles/ProductCard.css */
+.card {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.card:hover {
+  backdrop-filter: blur(20px);
+  background-color: rgba(255, 255, 255, 0.3);
+}

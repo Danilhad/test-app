@@ -6,6 +6,8 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    
+    require('tailwindcss'),
+    require('autoprefixer'),
+   
   ],
 }

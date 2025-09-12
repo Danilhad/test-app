@@ -1,0 +1,12 @@
+/* src/styles/CategoryFilter.css */
+.category-slider .slick-list,
+.category-slider .slick-track,
+.category-slider .slick-slide {
+  margin: 0;
+  padding: 0;
+}
+
+.category-slider .slick-slide button {
+  margin: 0;
+  padding: 0 px; /* Минимальный внутренний отступ */
+}

@@ -1,0 +1,9 @@
+/* src/styles/CategoryFilter.css */
+.category-scroll-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.category-scroll-container button {
+  flex-shrink: 0; /* Предотвращаем сжатие кнопок */
+}
