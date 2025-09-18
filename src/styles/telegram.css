@@ -1,0 +1,65 @@
+/* src/styles/telegram.css */
+/* Стили для Telegram WebApp */
+.tg-webapp {
+  background: var(--tg-theme-bg-color, #0088CC) !important;
+}
+
+.tg-webapp .glass-effect {
+  background: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.1)) !important;
+  backdrop-filter: blur(20px);
+}
+
+.tg-webapp .text-white {
+  color: var(--tg-theme-text-color, white) !important;
+}
+
+.tg-webapp .text-gray-700 {
+  color: var(--tg-theme-hint-color, rgba(255, 255, 255, 0.6)) !important;
+}
+
+/* Скроллбар для Telegram */
+.tg-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tg-scroll::-webkit-scrollbar-track {
+  background: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.1));
+}
+
+.tg-scroll::-webkit-scrollbar-thumb {
+  background: var(--tg-theme-button-color, rgba(255, 255, 255, 0.3));
+  border-radius: 2px;
+}
+
+/* Отключение стандартного скролла в Telegram */
+.no-scroll {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Адаптация для разных платформ Telegram */
+.tg-webapp[data-platform="ios"] {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tg-webapp[data-platform="android"] {
+  padding-bottom: 0;
+}
+
+.tg-webapp[data-platform="tdesktop"] {
+  padding: 0;
+}
+
+/* Кнопки в стиле Telegram */
+.tg-button {
+  background: var(--tg-theme-button-color, #0088CC) !important;
+  color: var(--tg-theme-button-text-color, white) !important;
+  border: none !important;
+}
+
+.tg-button:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}

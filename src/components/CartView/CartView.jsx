@@ -1,13 +1,14 @@
 // src/components/CartView/CartView.jsx
-import React, { useContext } from 'react';
+import React from 'react';
 import { useShopContext } from '../../context/ShopContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const CartView = () => {
-  const { cart, removeFromCart, clearCart, setShowOrderView } = useShopContext();
-   const navigate = useNavigate();
+  const { cart, removeFromCart, clearCart } = useShopContext();
+  const navigate = useNavigate();
 
-  if (cart.length === 0) {
+  // Добавляем проверку на undefined и null
+  if (!cart || cart.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-10">
         {/* Эмодзи корзины */}

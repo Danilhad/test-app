@@ -30,7 +30,7 @@
   },
   "include": [
     "src"
-  ],
+, "api/auth.js", "api/products"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

@@ -1,96 +1,145 @@
 // src/components/RootLayout/RootLayout.jsx
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../Header/Header';
 import CategoryFilter from '../CategoryFilter/CategoryFilter';
 import BottomNavigation from '../BottomNavigation/BottomNavigation';
-import { Outlet, useLocation } from 'react-router-dom';
+import ProductBottomSheet from '../ProductBottomSheet/ProductBottomSheet';
 import { useShopContext } from '../../context/ShopContext.jsx';
-import OrderView from '../OrderView/OrderView';
 
 const RootLayout = () => {
-  const { showOrderView } = useShopContext();
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const { showOrderView, productSheet, closeProductSheet } = useShopContext();
   const [isCategoryHidden, setIsCategoryHidden] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const location = useLocation();
-  const mainRef = useRef(null); // ← Добавлен ref
+  const mainRef = useRef(null);
+  const scrollTimeoutRef = useRef(null);
 
   const isCartOrOrderPage = location.pathname === '/cart' || location.pathname === '/order';
 
-  // Обработка скролла только внутри <main>
-  useEffect(() => {
-    const handleScroll = (e) => {
-      const scrollableElement = e.target;
-      const scrollY = scrollableElement.scrollTop;
-      const threshold = 5; // Порог скролла для скрытия
+  // Безопасное получение состояния productSheet
+  const sheetState = productSheet || {};
+  const isSheetOpen = Boolean(sheetState.isOpen);
+  const sheetProduct = sheetState.product || null;
 
-      if (scrollY > threshold) {
-        setIsCategoryHidden(true);
-      } else {
-        setIsCategoryHidden(false);
-      }
-    };
-
-    const element = mainRef.current;
-    if (element && element.scrollHeight > element.clientHeight) {
-      element.addEventListener('scroll', handleScroll);
+  // Оптимизированный обработчик скролла
+  const handleScroll = useCallback((e) => {
+    const scrollY = e.target.scrollTop;
+    setScrollPosition(scrollY);
+    
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
     }
-
-    return () => {
-      if (element) {
-        element.removeEventListener('scroll', handleScroll);
-      }
-    };
+    
+    scrollTimeoutRef.current = setTimeout(() => {
+      const threshold = 20;
+      setIsCategoryHidden(scrollY > threshold);
+    }, 30);
   }, []);
 
-  // Обработка изменения размера окна (клавиатура)
   useEffect(() => {
-    const handleResize = () => {
-      const windowHeight = window.innerHeight;
-      const screenRatio = windowHeight / document.documentElement.clientWidth;
-      setIsKeyboardOpen(screenRatio < 1.5);
-    };
+    const element = mainRef.current;
+    if (element) {
+      element.addEventListener('scroll', handleScroll, { passive: true });
+      return () => {
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+        element.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [handleScroll]);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Блокировка скролла
+  useEffect(() => {
+    if (isSheetOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+    
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [isSheetOpen]);
+
+  // Вычисление высот
+  const getLayoutHeights = () => {
+    return {
+      mainMarginTop: !isCartOrOrderPage && !isCategoryHidden ? '7rem' : '4rem',
+      mainMarginBottom: '4.5rem',
+      mainHeight: `calc(100vh - ${!isCartOrOrderPage && !isCategoryHidden ? '7rem' : '4rem'} - 4.5rem)`
+    };
+  };
+
+  const { mainMarginTop, mainMarginBottom, mainHeight } = getLayoutHeights();
 
   return (
-    <div 
-      className="min-h-screen"
-      style={{ backgroundColor: '#0088CC' }}
-    >
-      {/* Фиксированный Header */}
-      <Header />
+    <div className="min-h-screen flex flex-col bg-[#0088CC]">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <Header />
+      </header>
 
-      {/* Анимация скрытия/появления CategoryFilter */}
+      {/* CategoryFilter */}
       <AnimatePresence>
-        {!isCartOrOrderPage && !isCategoryHidden && (
+        {!isCartOrOrderPage && (
           <motion.div
             key="category-filter"
-            initial={{ y: 0, opacity: 1 }}
+            initial={{ y: -80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0, transition: { duration: 0.3 } }}
-            className="fixed top-16 left-0 right-0 z-30 shadow-md"
+            exit={{ y: -80, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-16 left-0 right-0 z-40"
           >
             <CategoryFilter />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Основной контент с отступом для BottomNavigation */}
+      {/* Основной контент */}
       <main 
-        ref={mainRef} // ← Привязка ref
-        className="flex-grow pt-16 overflow-y-auto" // ← Добавлен overflow-y-auto
+        ref={mainRef}
+        className="flex-grow transition-all duration-200"
+        style={{ 
+          marginTop: mainMarginTop,
+          marginBottom: mainMarginBottom,
+          height: mainHeight
+        }}
       >
-        <Outlet />
-        {showOrderView && <OrderView />}
+        <div className="container mx-auto px-4 py-6 pb-14">
+          <Outlet />
+        </div>
       </main>
 
-      {/* Фиксированная BottomNavigation */}
-      {!isKeyboardOpen && <BottomNavigation />}
+      {/* BottomNavigation */}
+      <AnimatePresence>
+        {!isSheetOpen && (
+          <motion.footer
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-0 left-0 right-0 z-50"
+          >
+            <BottomNavigation />
+          </motion.footer>
+        )}
+      </AnimatePresence>
+
+      {/* Product Bottom Sheet */}
+      <AnimatePresence>
+        {isSheetOpen && (
+          <ProductBottomSheet
+            product={sheetProduct}
+            isOpen={isSheetOpen}
+            onClose={closeProductSheet}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
-export default RootLayout;
+export default React.memo(RootLayout);

@@ -1,0 +1,228 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #0088CC;
+  }
+
+  #root {
+    height: 100%;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Liquid Glass эффекты */
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-2xl border border-white/20 border-b-white/40 border-r-white/40;
+  }
+  
+  .glass-card {
+    @apply glass-effect rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300;
+  }
+  
+  .glass-button {
+    @apply glass-effect rounded-xl hover:bg-white/15 transition-colors text-white;
+  }
+}
+
+/* Убираем стили для slick и добавляем новые */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Плавный скролл */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Стили для кастомного скролл-контейнера */
+.category-scroll-container {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20px,
+    black calc(100% - 20px),
+    transparent
+  );
+}
+
+/* Анимации для кнопок категорий */
+@keyframes category-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.category-pulse {
+  animation: category-pulse 2s ease-in-out infinite;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .category-scroll-container {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10px,
+      black calc(100% - 10px),
+      transparent
+    );
+  }
+}
+
+/* Кастомный скроллбар */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+/* Добавим в src/styles/globals.css */
+/* Анимации для bottom sheet */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.bottom-sheet-enter {
+  animation: slide-up 0.3s ease-out;
+}
+
+.bottom-sheet-exit {
+  animation: slide-down 0.3s ease-in;
+}
+
+.overlay-enter {
+  animation: fade-in 0.3s ease-out;
+}
+
+.overlay-exit {
+  animation: fade-out 0.3s ease-in;
+}
+
+/* Стили для драг-эффекта */
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grab:active {
+  cursor: grabbing;
+}
+
+/* Предотвращение выделения текста при свайпе */
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Плавный скролл */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Добавим в src/styles/globals.css */
+/* Улучшение производительности анимаций */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Плавный скролл для iOS */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Предотвращение скачков контента */
+.prevent-layout-shift {
+  will-change: transform, opacity;
+}
+
+/* Оптимизация анимаций */
+.optimize-animations {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Фикс для мобильного скролла */
+.mobile-scroll-fix {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mobile-scroll-fix > div {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}

@@ -1,12 +1,72 @@
-/* src/styles/CategoryFilter.css */
-.category-slider .slick-list,
-.category-slider .slick-track,
-.category-slider .slick-slide {
-  margin: 0;
-  padding: 0;
+/* src/styles/slick.css */
+/* Кастомные стили для slick slider */
+
+.category-slider {
+  margin: 0 -5px;
 }
 
-.category-slider .slick-slide button {
-  margin: 0;
-  padding: 0 px; /* Минимальный внутренний отступ */
+.category-slider .slick-slide {
+  padding: 0 5px;
+}
+
+.category-slider .slick-list {
+  padding: 10px 0;
+}
+
+.category-slider .slick-track {
+  display: flex;
+  align-items: center;
+}
+
+/* Убираем стандартные стрелки */
+.category-slider .slick-prev,
+.category-slider .slick-next {
+  display: none !important;
+}
+
+/* Стили для активного слайда */
+.category-slider .slick-center div button {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Анимация перехода слайдов */
+.category-slider .slick-slide {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.category-slider .slick-slide:not(.slick-center) {
+  opacity: 0.8;
+  transform: scale(0.95);
+}
+
+/* Индикаторы точек (если понадобятся) */
+.category-slider .slick-dots {
+  bottom: -25px;
+}
+
+.category-slider .slick-dots li button:before {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.category-slider .slick-dots li.slick-active button:before {
+  color: white;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .category-slider {
+    margin: 0 -3px;
+  }
+  
+  .category-slider .slick-slide {
+    padding: 0 3px;
+  }
+  
+  .category-slider .slick-slide:not(.slick-center) {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
 }

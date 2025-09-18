@@ -1,51 +1,77 @@
 // src/components/ProductList/ProductCard/ProductCard.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LiquidGlass from 'liquid-glass-react'
-const ProductCard = ({ product, onAddToCart }) => {
-  const [isAdded, setIsAdded] = useState(false);
-  const navigate = useNavigate();
+import React from 'react';
+import { useShopContext } from '../../../context/ShopContext.jsx';
 
-  const handleAddToCart = () => {
-    onAddToCart(product);
-    setIsAdded(true);
-    
-    setTimeout(() => {
-      setIsAdded(false);
-    }, 1000);
+const ProductCard = React.memo(({ product }) => {
+  const { openProductSheet } = useShopContext();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openProductSheet(product);
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
   };
 
   return (
     <div 
-      className="card group relative overflow-hidden bg-white/30 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-white/20 h-64 sm:h-72 cursor-pointer" 
-      onClick={() => navigate(`/product/${product.id}`)}
+      className="
+        group relative overflow-hidden 
+        rounded-2xl 
+        transition-all duration-300 
+        transform hover:-translate-y-1 
+        h-72 cursor-pointer
+        bg-white/10 backdrop-blur-xl
+        border border-white/20 border-b-white/40 border-r-white/40
+        shadow-lg hover:shadow-3xl
+        relative overflow-hidden
+        active:scale-95
+      "
+      onClick={handleClick}
     >
+      {/* Эффект жидкого стекла */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_70%)]"></div>
+      
       {/* Изображение */}
-      <div className="relative overflow-hidden rounded-t-xl h-40 sm:h-52">
+      <div className="relative overflow-hidden rounded-t-2xl h-48">
         <img 
           src={product.image} 
           alt={product.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
+          onError={handleImageError}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
+        
+        {/* Кнопка быстрого добавления */}
+        <button
+          onClick={handleClick}
+          className="absolute top-2 right-2 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+          aria-label="Быстрое добавление"
+        >
+          ➕
+        </button>
       </div>
       
       {/* Содержимое карточки */}
-      <div className="p-4 sm:p-5 flex flex-col justify-center min-h-[100px]">
-        {/* Название товара */}
-        <h3 className="font-medium text-gray-800 line-clamp-2 mb-12 text-sm sm:text-base leading-tight group-hover:text-primary-700 transition-colors">
+      <div className="p-4 flex flex-col justify-between h-24 relative z-10">
+        <h3 className="font-semibold text-white line-clamp-2 text-sm leading-tight group-hover:text-blue-200 transition-colors drop-shadow-md">
           {product.title}
         </h3>
         
-        {/* Цена */}
-        <div className="absolute bottom-0 pt-10 items-center justify-between mb-3 sm:mb-4">
-          <span className="text-xl sm:text-xl font-medium text-primary-600">
-            {product.price.toLocaleString()} ₽
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold text-white drop-shadow-md">
+            {product.price?.toLocaleString()} ₽
           </span>
         </div>
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;
