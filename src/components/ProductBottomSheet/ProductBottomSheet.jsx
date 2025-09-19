@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => {
-  const { addToCart, checkSizeAvailability } = useShopContext();
+  const { addToCart } = useShopContext();
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState('');
   const [showOutOfStockAlert, setShowOutOfStockAlert] = useState(false);
+  const [sizeAvailability, setSizeAvailability] = useState({});
   const sheetRef = useRef(null);
 
   // Добавляем безопасный onClose
@@ -18,12 +19,28 @@ const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => 
     }
   };
 
+  // Функция для преобразования sizes в массив
+  const getSizesArray = () => {
+    if (!product || !product.sizes) return [];
+    
+    if (Array.isArray(product.sizes)) {
+      return product.sizes;
+    } else if (typeof product.sizes === 'object' && product.sizes !== null) {
+      // Преобразуем объект в массив, добавляя свойство size
+      return Object.entries(product.sizes).map(([sizeName, sizeData]) => ({
+        size: sizeName, // Добавляем свойство size
+        ...sizeData
+      }));
+    }
+    return [];
+  };
+
   // Упрощенная функция проверки доступности
   const getSizeAvailability = (sizeItem) => {
-    if (!product) return { available: false, quantity: 0 };
+    if (!sizeItem) return { available: false, quantity: 0 };
     
-    const available = checkSizeAvailability(product.id, sizeItem.size);
-    const availableQuantity = sizeItem.quantity - (sizeItem.reserved || 0);
+    const availableQuantity = (sizeItem.quantity || 0) - (sizeItem.reserved || 0);
+    const available = availableQuantity > 0;
     
     return {
       available,
@@ -32,11 +49,24 @@ const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => 
     };
   };
 
+  // Предварительно вычисляем доступность всех размеров
+  useEffect(() => {
+    const sizesArray = getSizesArray();
+    if (sizesArray.length > 0) {
+      const availabilityMap = {};
+      sizesArray.forEach(sizeItem => {
+        availabilityMap[sizeItem.size] = getSizeAvailability(sizeItem);
+      });
+      setSizeAvailability(availabilityMap);
+    }
+  }, [product]);
+
   const handleAddToCart = () => {
     if (!selectedSize || !product) return;
 
-    // Находим выбранный размер
-    const selectedSizeItem = product.sizes?.find(item => item.size === selectedSize);
+    const sizesArray = getSizesArray();
+    const selectedSizeItem = sizesArray.find(item => item.size === selectedSize);
+    
     if (!selectedSizeItem) return;
 
     // Проверяем доступность
@@ -89,6 +119,8 @@ const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => 
   const shouldRender = Boolean(isOpen) && product;
 
   if (!shouldRender) return null;
+
+  const sizesArray = getSizesArray();
 
   return (
     <>
@@ -169,11 +201,11 @@ const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => 
               </div>
             </div>
 
-            {product.sizes && product.sizes.length > 0 && (
+            {sizesArray.length > 0 && (
               <div className="mb-4">
                 <h4 className="text-sm font-medium text-blue-100 mb-2">Размер:</h4>
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map(sizeItem => {
+                  {sizesArray.map(sizeItem => {
                     const availability = getSizeAvailability(sizeItem);
                     
                     return (
@@ -196,7 +228,7 @@ const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => 
                               : 'bg-gray-500/20 text-gray-400 border-gray-400/30 cursor-not-allowed'
                           }`}
                       >
-                        {sizeItem.size}
+                        {sizeItem.size} {/* Теперь здесь будет текст размера */}
                         
                         {/* Бейдж с количеством */}
                         <span className={`absolute -top-2 -right-2 text-xs px-1 rounded-full
@@ -226,9 +258,9 @@ const ProductBottomSheet = React.memo(({ product, onClose, isOpen = false }) => 
                   <div className="mt-3 p-2 bg-blue-500/20 rounded-lg">
                     <p className="text-blue-100 text-sm">
                       Выбран размер: <strong>{selectedSize}</strong>
-                      {product.sizes.find(s => s.size === selectedSize) && (
+                      {sizesArray.find(s => s.size === selectedSize) && (
                         <span className="ml-2">
-                          {getSizeAvailability(product.sizes.find(s => s.size === selectedSize)).text}
+                          {getSizeAvailability(sizesArray.find(s => s.size === selectedSize)).text}
                         </span>
                       )}
                     </p>

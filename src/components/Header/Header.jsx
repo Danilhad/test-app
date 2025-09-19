@@ -8,9 +8,8 @@ const Header = () => {
   const initDataState = useSignal(_initDataState);
   const user = initDataState?.user;
 
-  // Режим разработки - всегда админ
-  const isDevelopment = import.meta.env.DEV;
-  const isAdmin = isDevelopment || user?.id === 1267434095;
+  // Проверяем только Telegram ID
+  const isAdmin = user?.id === 1267434095;
 
   return (
     <header className="
@@ -28,12 +27,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Логотип */}
           <div className="flex items-center space-x-3">
-           
-              <img 
-                src="/logo.png" 
-                alt="Logo" 
-                className="relative h-12 w-12 object-cover "
-              />
+            <img 
+              src="/logo.png" 
+              alt="Logo" 
+              className="relative h-12 w-12 object-cover"
+            />
           </div>
 
           {/* Правая часть */}

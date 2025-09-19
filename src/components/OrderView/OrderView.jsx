@@ -1,4 +1,6 @@
 // src/components/OrderView/OrderView.jsx
+// src/components/OrderView/OrderView.jsx
+// src/components/OrderView/OrderView.jsx
 import React, { useState } from 'react';
 import { useShopContext } from '../../context/ShopContext.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -14,63 +16,89 @@ const OrderView = () => {
     comments: ''
   });
 
+  // Преобразуем объект cart в массив
+  const cartItems = Object.values(cart || {});
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (cart.length === 0) {
-      alert('Корзина пуста!');
-      return;
-    }
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (cartItems.length === 0) {
+    alert('Корзина пуста!');
+    return;
+  }
 
-    // Проверяем доступность всех товаров в корзине
-    const unavailableItems = cart.filter(item => 
-      !checkSizeAvailability(item.id, item.size)
-    );
+  // Проверяем доступность всех товаров в корзине
+  const unavailableItems = cartItems.filter(item => 
+    !checkSizeAvailability(item.id, item.size)
+  );
 
-    if (unavailableItems.length > 0) {
-      alert('Некоторые товары в корзине больше не доступны. Пожалуйста, обновите корзину.');
-      return;
-    }
+  if (unavailableItems.length > 0) {
+    alert('Некоторые товары в корзине больше не доступны. Пожалуйста, обновите корзину.');
+    return;
+  }
 
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    
-    const orderData = {
-      customer: {
-        name: formData.name,
-        phone: formData.phone,
-        address: formData.address
-      },
-      items: cart.map(item => ({
-        id: item.id,
-        title: item.title,
-        price: item.price,
-        size: item.size,
-        quantity: item.quantity,
-        image: item.image
-      })),
-      paymentMethod: formData.paymentMethod,
-      comments: formData.comments,
-      total: total
-    };
-
-    try {
-      // Создаем заказ и получаем его ID
-      const orderId = createOrder(orderData);
-      
-      alert(`Заказ #${orderId} успешно оформлен!`);
-      clearCart();
-      navigate('/');
-    } catch (error) {
-      alert('Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте again.');
-      console.error('Order creation error:', error);
-    }
+  const total = cartItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+  
+  // Очищаем данные от undefined значений
+  const orderData = {
+    customer: {
+      name: formData.name || '', // гарантируем строку, даже если undefined
+      phone: formData.phone || '',
+      address: formData.address || ''
+    },
+    items: cartItems.map(item => ({
+      id: item.id || '',
+      title: item.title || '',
+      price: item.price || 0,
+      size: item.size || '',
+      quantity: item.quantity || 0,
+      image: item.image || ''
+    })),
+    paymentMethod: formData.paymentMethod || 'card',
+    comments: formData.comments || '', // гарантируем строку
+    total: total,
+    createdAt: Date.now() // добавляем timestamp
   };
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+
+  try {
+    const orderId = await createOrder(orderData);
+    alert(`Заказ #${orderId} успешно оформлен!`);
+    
+    if (typeof clearCart === 'function') {
+      clearCart();
+    }
+    
+    navigate('/');
+  } catch (error) {
+    alert('Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте again.');
+    console.error('Order creation error:', error);
+  }
+};
+
+// Функция для удаления undefined полей из объекта
+const removeUndefinedFields = (obj) => {
+  if (typeof obj !== 'object' || obj === null) return obj;
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => removeUndefinedFields(item));
+  }
+  
+  const cleaned = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== undefined) {
+      cleaned[key] = removeUndefinedFields(value);
+    }
+  }
+  return cleaned;
+};
+
+  const totalPrice = cartItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-sm">
@@ -79,7 +107,7 @@ const OrderView = () => {
       {/* Краткая информация о заказе */}
       <div className="mb-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold mb-2">Состав заказа:</h3>
-        {cart.map(item => {
+        {cartItems.map(item => {
           const isAvailable = checkSizeAvailability(item.id, item.size);
           
           return (

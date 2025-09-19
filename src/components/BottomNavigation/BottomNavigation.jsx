@@ -8,7 +8,8 @@ const BottomNavigation = () => {
   const location = useLocation();
   const { cart } = useShopContext();
 
-  const validCartItems = cart?.filter(item => item && item.id) || [];
+  // ИСПРАВЛЕНО: Используем Object.values() для преобразования объекта в массив
+  const validCartItems = Object.values(cart || {}).filter(item => item && item.id) || [];
   const cartItemCount = validCartItems.length;
 
   return (

@@ -5,6 +5,9 @@ import { useShopContext } from '../../context/ShopContext.jsx';
 const OrdersList = () => {
   const { orders, updateOrderStatus } = useShopContext();
 
+  // Преобразуем объект orders в массив
+  const ordersArray = Object.values(orders || {});
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800';
@@ -22,7 +25,7 @@ const OrdersList = () => {
     }
   };
 
-  if (orders.length === 0) {
+  if (ordersArray.length === 0) {
     return (
       <div className="text-center py-10">
         <p className="text-gray-500">Заказов пока нет</p>
@@ -35,7 +38,7 @@ const OrdersList = () => {
       <h2 className="text-2xl font-bold mb-6">История заказов</h2>
       
       <div className="space-y-4">
-        {orders.map(order => (
+        {ordersArray.map(order => (
           <div key={order.id} className="bg-white p-4 rounded-lg shadow-sm border">
             <div className="flex justify-between items-start mb-3">
               <div>

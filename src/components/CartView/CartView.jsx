@@ -6,9 +6,12 @@ import { useNavigate } from 'react-router-dom';
 const CartView = () => {
   const { cart, removeFromCart, clearCart } = useShopContext();
   const navigate = useNavigate();
-
-  // Добавляем проверку на undefined и null
-  if (!cart || cart.length === 0) {
+  
+  // Преобразуем объект cart в массив
+  const cartItems = Object.values(cart || {});
+  
+  // Добавляем проверку на пустоту
+  if (!cartItems || cartItems.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-10">
         {/* Эмодзи корзины */}
@@ -18,13 +21,20 @@ const CartView = () => {
     );
   }
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+
+  // Функция для удаления товара из корзины
+  const handleRemoveFromCart = (item) => {
+    // Создаем уникальный ключ для товара (как в addToCart)
+    const itemKey = `${item.id}-${item.size}`;
+    removeFromCart(itemKey);
+  };
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Корзина</h2>
       <ul className="space-y-4">
-        {cart.map(item => (
+        {cartItems.map(item => (
           <li 
             key={`${item.id}-${item.size}`} 
             className="flex justify-between items-center p-3 bg-gray-50 rounded-lg shadow-sm"
@@ -35,14 +45,16 @@ const CartView = () => {
                 <h3 className="font-medium">{item.title}</h3>
                 <div className="flex items-center mt-1">
                   <span className="text-sm text-gray-500 mr-2">{item.price} ₽ × {item.quantity}</span>
-                  <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-black text-white">
-                    {item.size}
-                  </span>
+                  {item.size && (
+                    <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-black text-white">
+                      {item.size}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
             <button 
-              onClick={() => removeFromCart(item.id, item.size)}
+              onClick={() => handleRemoveFromCart(item)}
               className="text-red-500 hover:text-red-700"
             >
               ❌

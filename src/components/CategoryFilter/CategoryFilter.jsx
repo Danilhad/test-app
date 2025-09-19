@@ -1,5 +1,4 @@
 // src/components/CategoryFilter/CategoryFilter.jsx
-// src/components/CategoryFilter/CategoryFilter.jsx
 import React, { useRef, useState, useEffect } from 'react';
 import { useShopContext } from '../../context/ShopContext.jsx';
 import { CATEGORIES } from '../../config/constants';
@@ -10,9 +9,12 @@ const CategoryFilter = React.memo(() => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
+  // ВАЖНО: Защита от не-массива
+  const safeProducts = Array.isArray(products) ? products : [];
+
   // Отладочная информация
   console.log('🎯 Active category:', activeCategory);
-  console.log('🎯 Available categories in products:', [...new Set(products.map(p => p.category))]);
+  console.log('🎯 Available categories in products:', [...new Set(safeProducts.map(p => p.category))]);
   console.log('🎯 CATEGORIES config:', CATEGORIES);
 
   const checkScrollPosition = () => {
@@ -22,7 +24,6 @@ const CategoryFilter = React.memo(() => {
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
     }
   };
-
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -43,10 +44,8 @@ const CategoryFilter = React.memo(() => {
     if (container) {
       container.addEventListener('scroll', checkScrollPosition);
       window.addEventListener('resize', checkScrollPosition);
-      checkScrollPosition(); // Initial check
+      checkScrollPosition();
     }
-
-
     
     return () => {
       if (container) {
@@ -56,7 +55,9 @@ const CategoryFilter = React.memo(() => {
     };
   }, []);
 
-   return (
+
+  
+  return (
     <nav className="
       bg-white-600/80 backdrop-blur-sm
       border-b border-blue-400/30
@@ -69,7 +70,7 @@ const CategoryFilter = React.memo(() => {
         {/* Отладочная информация */}
         <div className="bg-yellow-500/20 p-1 rounded text-center mb-2">
           <span className="text-yellow-200 text-xs">
-            Категории в товарах: {[...new Set(products.map(p => p.category))].join(', ')}
+            Категории в товарах: {[...new Set(safeProducts.map(p => p.category))].join(', ')}
           </span>
         </div>
 
@@ -94,9 +95,9 @@ const CategoryFilter = React.memo(() => {
             >
               <span className="text-base">{category.icon}</span>
               <span className="text-xs font-semibold">{category.name}</span>
-              {/* Покажем количество товаров в категории */}
+              {/* ИСПРАВЛЕНО: используем safeProducts вместо products */}
               <span className="text-xs opacity-70">
-                ({products.filter(p => p.category === category.id).length})
+                ({safeProducts.filter(p => p.category === category.id).length})
               </span>
             </button>
           ))}
